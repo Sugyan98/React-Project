@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useRef} from 'react';
 
 import Card from '../UI/Card';
 import classes from "./UserInput.module.css"
@@ -7,21 +7,18 @@ import ErrorModal from '../UI/ErrorModal';
 
 const UserInput = (props) => { 
 
-    const [name,setName] = useState('');
-    const [age,setAge] = useState('');
+    const nameInputRef = useRef();
+    const ageInputRef = useRef();
+    const collegeNameInputRef = useRef();
+    
     const [error, setError] = useState();
-
-    const nameChangeHandler = (e) => { 
-        setName(e.target.value)
-    }
-
-    const ageChangeHandler = (e) => { 
-        setAge(e.target.value)
-    }
-
 
     function submitHandler(e){
         e.preventDefault()
+
+        const name = nameInputRef.current.value;
+        const age = ageInputRef.current.value;
+        const collegeName = collegeNameInputRef.current.value;
 
         if (name.trim().length === 0 || age.trim().length === 0) {
             setError({
@@ -42,13 +39,15 @@ const UserInput = (props) => {
         const newUser = {
             name : name,
             age : age,
+            collegeName : collegeName,
             id : Math.random().toString()
         };
 
         props.onAddUser(newUser);
 
-        setName('');
-        setAge('');
+        nameInputRef.current.value = '';
+        ageInputRef.current.value = '';
+        collegeNameInputRef.current.value = '';
 
     }
 
@@ -69,11 +68,15 @@ const UserInput = (props) => {
                 <form onSubmit={submitHandler}>
                     <div>
                         <label>Username:</label>
-                        <input type='text' value={name} onChange={nameChangeHandler}/>
+                        <input type='text' ref={nameInputRef}/>
                     </div>
                     <div>
-                        <label>Age:</label>
-                        <input type='number' value={age} min="0" onChange={ageChangeHandler}></input>
+                        <label>Age (Years):</label>
+                        <input type='number' ref={ageInputRef}></input>
+                    </div>
+                    <div>
+                        <label>College Name:</label>
+                        <input type='text' ref={collegeNameInputRef}></input>
                     </div>
                     <Button type='submit'>Add User</Button>
                 </form>
