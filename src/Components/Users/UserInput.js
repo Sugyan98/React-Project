@@ -57,7 +57,7 @@ const UserInput = (props) => {
       };
 
     return(
-        <div>
+        <React.Fragment>
             {error && (
                 <ErrorModal
                 title={error.title}
@@ -78,7 +78,7 @@ const UserInput = (props) => {
                     <Button type='submit'>Add User</Button>
                 </form>
             </Card>
-        </div>
+        </React.Fragment>
     )
  }
 
